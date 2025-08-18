@@ -1,0 +1,27 @@
+﻿@using Europa.Resources
+
+<script src="~/Static/projeto/rel-entidade/index-rel-entidade.js"></script>
+<script>
+    Europa.Controllers.RelatorioEntidade.UrlListar = '@Url.Action("Listar", "ViewEntidade")';
+    Europa.Controllers.RelatorioEntidade.UrlExportarPagina = '@Url.Action("ExportarPagina", "ViewEntidade")'; 
+    Europa.Controllers.RelatorioEntidade.UrlExportarTodos = '@Url.Action("ExportarTodos", "ViewEntidade")';
+</script>
+<div id="titlebar-name">
+    @GlobalMessages.RelatorioDeEntidades
+</div>
+
+@* PRECISAMOS DESTE FORMULÁRIO ESCONDIDO PARA EXPORTAR REGISTROS *@
+<form id="Exportar" hidden></form>
+
+@* Este é o código HTML responsável pelo Datatable *@
+<div ng-controller="Entidades as entidade">
+    <div id="datatable-rel-entidade-header">
+        <div class="pull-right">
+            <button class="btn btn-default" type="button" onclick="Europa.Controllers.RelatorioEntidade.ExportarPagina()"><i class="fa fa-file-excel-o" aria-hidden="true"></i> @GlobalMessages.ExportarPagina</button>
+            <button class="btn btn-default" type="button" onclick="Europa.Controllers.RelatorioEntidade.ExportarTodos()"><i class="fa fa-file-excel-o" aria-hidden="true"></i> @GlobalMessages.ExportarTodos</button>
+        </div>
+    </div>
+    <table datatable="" dt-options="entidade.dtOptions" dt-columns="entidade.dtColumns"
+           dt-instance="entidade.dtInstance" class="table table-striped table-bordered"
+           dt-column-defs="entidade.dtColumnDefs"></table>
+</div>

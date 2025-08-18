@@ -1,0 +1,93 @@
+@using Europa.Resources
+@using Europa.Extensions
+@using Europa.Domain.Core.Enums
+
+@model Europa.Domain.Treinamento.Models.Views.ViewCliente
+
+<script src="~/Static/projeto/rel-cliente/index-rel-cliente.js"></script>
+<script>
+    Europa.Controllers.Cliente.UrlListarClientes = '@Url.Action("ListarClientes", "ViewCliente")';
+    Europa.Controllers.Cliente.UrlExcluirCliente = '@Url.Action("ExcluirCliente", "Cliente")';
+    Europa.Controllers.Cliente.UrlReativarClientesEmLote = '@Url.Action("ReativarClientesEmLote", "ViewCliente")';
+    Europa.Controllers.Cliente.UrlSuspenderClientesEmLote = '@Url.Action("SuspenderClientesEmLote", "ViewCliente")';
+    Europa.Controllers.Cliente.UrlCancelarClientesEmLote = '@Url.Action("CancelarClientesEmLote", "ViewCliente")';
+    Europa.Controllers.Cliente.UrlExportarPagina = '@Url.Action("ExportarPagina", "ViewCliente")';
+    Europa.Controllers.Cliente.UrlExportarTodos = '@Url.Action("ExportarTodos", "ViewCliente")';
+    Europa.Controllers.Cliente.UrlDetalhesCliente = '@Url.Action("Detalhes", "Cliente")';
+    Europa.Controllers.Cliente.UrlCriarCliente = '@Url.Action("Criar", "Cliente")';
+</script>
+
+<style>
+    #titlebar-name-target {
+        width: 100%;
+        padding-right: 5px;
+        font-size: 24px;
+    }
+</style>
+
+<div id="titlebar-name">
+    @GlobalMessages.TelaDeClientes
+    <div class="pull-right">
+        <button type="button" title="@GlobalMessages.Incluir" class="btn btn-default"
+                onclick="window.location.href = Europa.Controllers.Cliente.UrlCriarCliente">
+            <i class="fa fa-plus" aria-hidden="true"></i> @GlobalMessages.Incluir
+        </button>
+    </div>
+</div>
+
+<form id="Exportar" hidden></form>
+
+<form id="form-filtro">
+    <div class="col-md-24">
+        <div class="col-md-3">
+            @Html.Label(GlobalMessages.Nome)
+            @Html.TextBoxFor(x => x.Nome, null, new { @class = "form-control", maxlength = 255, Name = "NomeFiltro", @id = "NomeFiltro" })
+        </div>
+        <div class="col-md-3 col-md-offset-1">
+            @Html.Label(GlobalMessages.Endereco)
+            @Html.TextBoxFor(x => x.Endereco, null, new { @class = "form-control", maxlength = 255, Name = "EnderecoFiltro", @id = "EnderecoFiltro" })
+        </div>
+        <div class="col-md-3 col-md-offset-1">
+            @Html.Label(GlobalMessages.Situacao)
+            <select id="SituacaoFiltro" multiple="multiple" class="select2-container form-control">
+                <option value="1" selected="selected">@GlobalMessages.Situacao_Ativo</option>
+                <option value="2">@GlobalMessages.Situacao_Suspenso</option>
+                <option value="3">@GlobalMessages.Situacao_Cancelado</option>
+            </select>
+        </div>
+        <div class="col-md-4 col-md-offset-9" style="text-align:right; margin-top: 21px;">
+            <button class="btn btn-default" type="button" onclick="Europa.Controllers.Cliente.Filtrar()">
+                <i class="fa fa-filter"></i> @GlobalMessages.Filtrar
+            </button>
+
+            <button class="btn btn-default" type="button" onClick="Europa.Controllers.Cliente.LimparFiltro()">
+                <i class="fa fa-eraser"></i> @GlobalMessages.Limpar
+            </button>
+        </div>
+    </div>
+</form>
+
+<div ng-controller="Clientes as cliente">
+    <div id="datatable-clientes-header">
+        <div class="pull-left" style="padding-top:4px;font-size:15px;font-weight:bold;">@GlobalMessages.Clientes</div>
+        <div class="pull-right">
+            <button class="btn btn-default" type="button" onclick="Europa.Controllers.Cliente.ExportarPagina()"><i class="fa fa-file-excel-o" aria-hidden="true"></i> @GlobalMessages.ExportarPagina</button>
+            <button class="btn btn-default" type="button" onclick="Europa.Controllers.Cliente.ExportarTodos()"><i class="fa fa-file-excel-o" aria-hidden="true"></i> @GlobalMessages.ExportarTodos</button>
+            <div class="btn-group">
+                <button type="button" title="@GlobalMessages.Opcoes" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                    @GlobalMessages.Opcoes <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    <li><a href="#" onclick="Europa.Controllers.Cliente.ReativarEmLote()" title="@GlobalMessages.Reativar">@GlobalMessages.Reativar</a></li>
+                    <li><a href="#" onclick="Europa.Controllers.Cliente.SuspenderEmLote()" title="@GlobalMessages.Suspender">@GlobalMessages.Suspender</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" onclick="Europa.Controllers.Cliente.CancelarEmLote()" title="@GlobalMessages.Cancelar">@GlobalMessages.Cancelar</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <table datatable="" dt-options="cliente.dtOptions" dt-columns="cliente.dtColumns"
+           dt-instance="cliente.dtInstance" class="table table-striped table-bordered"
+           dt-column-defs="cliente.dtColumnDefs"></table>
+</div>

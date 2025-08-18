@@ -1,0 +1,110 @@
+﻿@using Europa.Resources
+@using Europa.Extensions @* Usando o Europa.Extensions para ganhar suporte ao Html.EnumDropDownListFor *@
+@using Europa.Domain.Core.Enums
+
+@model Europa.Domain.Treinamento.Models.Entidade
+
+<script src="~/Static/projeto/entidade/index-entidade.js"></script>
+<script>
+    Europa.Controllers.Entidade.UrlListarEntidades = '@Url.Action("ListarEntidades", "Entidade")';
+    Europa.Controllers.Entidade.UrlSalvarEntidade = '@Url.Action("SalvarEntidade", "Entidade")';
+    Europa.Controllers.Entidade.UrlExcluirEntidade = '@Url.Action("ExcluirEntidade", "Entidade")';
+    Europa.Controllers.Entidade.UrlReativarEntidadesEmLote = '@Url.Action("ReativarEntidadesEmLote", "Entidade")';
+    Europa.Controllers.Entidade.UrlSuspenderEntidadesEmLote = '@Url.Action("SuspenderEntidadesEmLote", "Entidade")';
+    Europa.Controllers.Entidade.UrlCancelarEntidadesEmLote = '@Url.Action("CancelarEntidadesEmLote", "Entidade")';
+</script>
+
+<div id="titlebar-name">
+    @GlobalMessages.Entidades
+</div>
+
+<form id="form-filtro">
+    <div class="col-md-24">
+        <div class="col-md-4">
+            @Html.Label(GlobalMessages.Nome)
+            @Html.TextBoxFor(x => x.Nome, null, new { @class = "form-control", maxlength = 255, Name = "NomeFiltro", @id = "NomeFiltro" })
+        </div>
+        <div class="col-md-4 col-md-offset-1">
+            @Html.Label(GlobalMessages.Sobrenome)
+            @Html.TextBoxFor(x => x.Sobrenome, null, new { @class = "form-control", maxlength = 255, Name = "SobrenomeFiltro", @id = "SobrenomeFiltro" })
+        </div>
+        <div class="col-md-3 col-md-offset-1">
+            @Html.Label(GlobalMessages.DataNascimento)
+            <div class="input-group">
+                <span class="input-group-addon">@GlobalMessages.De</span>
+                @Html.TextBox("DataNascimentoDe", "", new { @class = "form-control", datepicker = "datepicker", parent = "#dialog_excluir_log" })
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="Europa.Components.DatePicker.ClosestInput(this)">
+                        <i class="fa fa-calendar"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3 col-md-offset-1">
+            @Html.Label(GlobalMessages.DataElaboracao, new { style = "visibility:hidden" })
+            <div class="input-group">
+                <span class="input-group-addon">@GlobalMessages.Ate</span>
+                @Html.TextBox("DataNascimentoAte", "", new { @class = "form-control", datepicker = "datepicker", parent = "#dialog_excluir_log" })
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="Europa.Components.DatePicker.ClosestInput(this)">
+                        <i class="fa fa-calendar"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-4 col-md-offset-1">
+            @Html.Label(GlobalMessages.Situacao)
+            <select id="SituacaoFiltro" multiple="multiple" class="select2-container form-control">
+                <option value="1" selected="selected">@GlobalMessages.Situacao_Ativo</option>
+                <option value="2">@GlobalMessages.Situacao_Suspenso</option>
+                <option value="3">@GlobalMessages.Situacao_Cancelado</option>
+            </select>
+        </div>
+        <div class="col-md-1 col-md-offset-1">
+            @Html.Label(GlobalMessages.Idade)
+            @Html.TextBoxFor(x => x.Idade, null, new { @class = "form-control", maxlength = 5, Name = "IdadeFiltro", @id = "IdadeFiltro" })
+        </div>
+    </div>
+
+    <div class="col-md-24">
+        <div class="col-md-9">
+            @Html.Label(GlobalMessages.Unidades)
+            <select id="autocomplete_unidade_filtro" class="select2-container form-control"></select>
+        </div>
+        <div class="col-md-15" style="text-align:right; margin-top: 21px;">
+            <button class="btn btn-default" type="submit" onclick="Europa.Controllers.Entidade.Filtrar()">
+                <i class="fa fa-filter"></i> @GlobalMessages.Filtrar
+            </button>
+
+            <button class="btn btn-default" onClick="Europa.Controllers.Entidade.LimparFiltro()">
+                <i class="fa fa-eraser"></i> @GlobalMessages.Limpar
+            </button>
+        </div>
+    </div>
+</form>
+
+@* Este é o código HTML responsável pelo Datatable *@
+<div ng-controller="Entidades as entidade">
+    <div id="datatable-entidades-header">
+        <div class="pull-right">
+            <button type="button" title="@GlobalMessages.Novo" class="btn btn-default" onclick="Europa.Controllers.Entidade.CriarEntidade()">
+                <i class="fa fa-plus" aria-hidden="true"></i> @GlobalMessages.Novo
+            </button>
+            <div class="btn-group">
+                <button type="button" title="@GlobalMessages.Opcoes" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                    @GlobalMessages.Opcoes <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    <li><a href="#" onclick="Europa.Controllers.Entidade.ReativarEmLote()" title="@GlobalMessages.Reativar">@GlobalMessages.Reativar</a></li>
+                    <li><a href="#" onclick="Europa.Controllers.Entidade.SuspenderEmLote()" title="@GlobalMessages.Suspender">@GlobalMessages.Suspender</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" onclick="Europa.Controllers.Entidade.CancelarEmLote()" title="@GlobalMessages.Cancelar">@GlobalMessages.Cancelar</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <table datatable="" dt-options="entidade.dtOptions" dt-columns="entidade.dtColumns"
+           dt-instance="entidade.dtInstance" class="table table-striped table-bordered"
+           dt-column-defs="entidade.dtColumnDefs"></table>
+</div>

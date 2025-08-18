@@ -1,0 +1,18 @@
+﻿<script>
+    Europa.Components.DetailAction = {};
+    Europa.Components.DetailAction.PreCliente = '@UrlHelper.GenerateUrl("AbsoluteRoute", "Index", "PreClienteNovo", null, Url.RouteCollection, new RequestContext(Html.ViewContext.HttpContext, new RouteData()), false)';
+    Europa.Components.DetailAction.InteracaoPreCliente = '@UrlHelper.GenerateUrl("AbsoluteRoute", "Index", "Atendimento", null, Url.RouteCollection, new RequestContext(Html.ViewContext.HttpContext, new RouteData()), false)';
+    Europa.Components.DetailAction.DetalheAtendimento = '@UrlHelper.GenerateUrl("AbsoluteRoute", "Index", "DetalheAtendimento", null, Url.RouteCollection, new RequestContext(Html.ViewContext.HttpContext, new RouteData()), false)';
+    Europa.Components.DetailAction.CallCliente = 'tel:55';
+    Europa.Components.DetailAction.VisualizacaoDocumento = '@UrlHelper.GenerateUrl("AbsoluteRoute", "Index", "VisualizacaoDocumento", null, Url.RouteCollection, new RequestContext(Html.ViewContext.HttpContext, new RouteData()), false)';
+
+
+    Europa.Components.DetailAction.Links = {
+        "PreCliente": Europa.Components.DetailAction.PreCliente,
+        "InteracaoPreCliente": Europa.Components.DetailAction.InteracaoPreCliente,
+        "DetalheAtendimento": Europa.Components.DetailAction.DetalheAtendimento,
+        "CallCliente": Europa.Components.DetailAction.CallCliente,
+        "VisualizacaoDocumento": Europa.Components.DetailAction.VisualizacaoDocumento
+    }
+
+</script>

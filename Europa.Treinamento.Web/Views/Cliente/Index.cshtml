@@ -1,0 +1,193 @@
+@using Europa.Resources
+@using Europa.Extensions
+@using Europa.Domain.Core.Enums
+
+@model Europa.Domain.Treinamento.Models.Views.ViewCliente
+
+<script src="~/Static/projeto/cadastro/index-cliente.js"></script>
+<script>
+    Europa.Controllers.Cliente.UrlListarContatos = '@Url.Action("ListarContatos", "Cliente")';
+    Europa.Controllers.Cliente.UrlSalvarCliente = '@Url.Action("SalvarCliente", "Cliente")';
+    Europa.Controllers.Cliente.UrlSalvarContato = '@Url.Action("SalvarContato", "Cliente")';
+    Europa.Controllers.Cliente.UrlExcluirContato = '@Url.Action("ExcluirContato", "Cliente")';
+    Europa.Controllers.Cliente.UrlEnviarContato = '@Url.Action("EnviarContato", "Cliente")';
+</script>
+
+<style>
+    #titlebar-name-target {
+        width: 100%;
+        padding-right: 5px;
+        font-size: 24px;
+    }
+</style>
+
+<div id="titlebar-name">
+    @GlobalMessages.Clientes
+    <div class="pull-right">
+        <button type="button" class="btn btn-success" onclick="Europa.Controllers.Cliente.SalvarCliente()">Salvar</button>
+        <a href="@Url.Action("Index", "ViewCliente")" class="btn btn-default">Desistir</a>
+    </div>
+</div>
+
+<form id="form-filtro">
+    @Html.HiddenFor(x => x.Id)
+    <div class="col-md-24">
+        <div class="col-md-11">
+            @Html.Label(GlobalMessages.Nome)
+            @Html.TextBoxFor(x => x.Nome, null, new { @class = "form-control", maxlength = 255})
+        </div>
+        <div class="col-md-5 col-md-offset-1">
+            @Html.Label(GlobalMessages.Cpf)
+            @Html.TextBoxFor(x => x.CpfCliente, null, new { @class = "form-control", maxlength = 14})
+        </div>
+        <div class="col-md-5 col-md-offset-1">
+            @Html.Label(GlobalMessages.DataNascimento)
+            <div class="input-group">
+                @Html.TextBoxFor(x => x.DataNascimento, "", new { @class = "form-control", datepicker = "datepicker", parent = "#dialog_excluir_log" })
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="Europa.Components.DatePicker.ClosestInput(this)">
+                        <i class="fa fa-calendar"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <br/><label style="font-weight:bold">Endereço</label>
+
+    <div class="col-md-24">
+        <div class="col-md-5">
+            @Html.Label(GlobalMessages.CEP)
+            @Html.TextBoxFor(x => x.CepEndereco, null, new { @class = "form-control", maxlength = 8})
+        </div>
+
+        <div class="col-md-7 col-md-offset-1">
+            @Html.Label(GlobalMessages.Endereco)
+            @Html.TextBoxFor(x => x.Logradouro, null, new { @class = "form-control", maxlength = 255})
+        </div>
+
+        <div class="col-md-4 col-md-offset-1">
+            @Html.Label(GlobalMessages.Numero)
+            @Html.TextBoxFor(x => x.NumeroEndereco, null, new { @class = "form-control", maxlength = 3})
+        </div>
+
+        <div class="col-md-4 col-md-offset-1">
+            @Html.Label(GlobalMessages.Complemento)
+            @Html.TextBoxFor(x => x.Complemento, null, new { @class = "form-control", maxlength = 255})
+        </div>
+
+        <div class="col-md-5">
+            @Html.Label(GlobalMessages.Bairro)
+            @Html.TextBoxFor(x => x.Bairro, null, new { @class = "form-control", maxlength = 255})
+        </div>
+
+        <div class="col-md-7 col-md-offset-1">
+            @Html.Label(GlobalMessages.Cidade)
+            @Html.TextBoxFor(x => x.Cidade, null, new { @class = "form-control", maxlength = 255})
+        </div>
+
+        <div class="col-md-4 col-md-offset-1">
+            @Html.Label(GlobalMessages.Estado)
+
+            <select id="Uf" name="Uf" class="form-control select2">
+                <option value="">Selecione</option>
+                <option value="AC" @(Model?.Uf == "AC" ? "selected" : "")>@GlobalMessages.Uf_AC</option>
+                <option value="AL" @(Model?.Uf == "AL" ? "selected" : "")>@GlobalMessages.Uf_AL</option>
+                <option value="AP" @(Model?.Uf == "AP" ? "selected" : "")>@GlobalMessages.Uf_AP</option>
+                <option value="AM" @(Model?.Uf == "AM" ? "selected" : "")>@GlobalMessages.Uf_AM</option>
+                <option value="BA" @(Model?.Uf == "BA" ? "selected" : "")>@GlobalMessages.Uf_BA</option>
+                <option value="CE" @(Model?.Uf == "CE" ? "selected" : "")>@GlobalMessages.Uf_CE</option>
+                <option value="ES" @(Model?.Uf == "ES" ? "selected" : "")>@GlobalMessages.Uf_ES</option>
+                <option value="GO" @(Model?.Uf == "GO" ? "selected" : "")>@GlobalMessages.Uf_GO</option>
+                <option value="MA" @(Model?.Uf == "MA" ? "selected" : "")>@GlobalMessages.Uf_MA</option>
+                <option value="MT" @(Model?.Uf == "MT" ? "selected" : "")>@GlobalMessages.Uf_MT</option>
+                <option value="MS" @(Model?.Uf == "MS" ? "selected" : "")>@GlobalMessages.Uf_MS</option>
+                <option value="MG" @(Model?.Uf == "MG" ? "selected" : "")>@GlobalMessages.Uf_MG</option>
+                <option value="PA" @(Model?.Uf == "PA" ? "selected" : "")>@GlobalMessages.Uf_PA</option>
+                <option value="PB" @(Model?.Uf == "PB" ? "selected" : "")>@GlobalMessages.Uf_PB</option>
+                <option value="PR" @(Model?.Uf == "PR" ? "selected" : "")>@GlobalMessages.Uf_PR</option>
+                <option value="PE" @(Model?.Uf == "PE" ? "selected" : "")>@GlobalMessages.Uf_PE</option>
+                <option value="PI" @(Model?.Uf == "PI" ? "selected" : "")>@GlobalMessages.Uf_PI</option>
+                <option value="RJ" @(Model?.Uf == "RJ" ? "selected" : "")>@GlobalMessages.Uf_RJ</option>
+                <option value="RN" @(Model?.Uf == "RN" ? "selected" : "")>@GlobalMessages.Uf_RN</option>
+                <option value="RS" @(Model?.Uf == "RS" ? "selected" : "")>@GlobalMessages.Uf_RS</option>
+                <option value="RO" @(Model?.Uf == "RO" ? "selected" : "")>@GlobalMessages.Uf_RO</option>
+                <option value="RR" @(Model?.Uf == "RR" ? "selected" : "")>@GlobalMessages.Uf_RR</option>
+                <option value="SC" @(Model?.Uf == "SC" ? "selected" : "")>@GlobalMessages.Uf_SC</option>
+                <option value="SP" @(Model?.Uf == "SP" ? "selected" : "")>@GlobalMessages.Uf_SP</option>
+                <option value="SE" @(Model?.Uf == "SE" ? "selected" : "")>@GlobalMessages.Uf_SE</option>
+                <option value="TO" @(Model?.Uf == "TO" ? "selected" : "")>@GlobalMessages.Uf_TO</option>
+                <option value="DF" @(Model?.Uf == "DF" ? "selected" : "")>@GlobalMessages.Uf_DF</option>
+            </select>
+        </div>
+    </div>
+</form>
+
+<div class="modal" tabindex="-1" id="modalContato">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div style="padding-left: 10px; font-weight: bold;">
+                    <h4 class="modal-title" id="modalContatoLabel">@GlobalMessages.IncluirContato</h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="formContatoModal">
+                    <div class="modal-body">
+                        <input type="text" id="idContato" class="form-control" style="display: none;"/>
+                        <div class="form-group">
+                            <label>@GlobalMessages.Tipo</label>
+                            <select id="TipoContato" class="form-control">
+                                <option value="1">Email</option>
+                                <option value="2">Celular</option>
+                                <option value="3">Telefone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>@GlobalMessages.Descricao</label>
+                            <input type="text" id="DescricaoContato" name="DescricaoContato" class="form-control" maxlength = 8 />
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="PrincipalContato" />
+                                @GlobalMessages.Principal
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div style="text-align:right; margin-top: 21px;margin-top:0;">
+                    <button type="button" title="@GlobalMessages.Salvar" class="btn btn-default btn-primary" onclick="Europa.Controllers.Cliente.SalvarContato()">
+                        <i class="fa fa-plus" aria-hidden="true"></i> @GlobalMessages.Salvar
+                    </button>
+
+                    <button class="btn btn-default btn-danger" title="@GlobalMessages.Desistir" type="button" onclick="Europa.Controllers.Cliente.FecharModalContatos()">
+                        <i class="fa fa-ban me-2"></i> @GlobalMessages.Desistir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-controller="Contatos as contato">
+    <div id="datatable-contato-header">
+        <div class="pull-left" style="padding-top:4px;font-size:15px;font-weight:bold;">@GlobalMessages.Contatos</div>
+        <div class="pull-right">
+            <button type="button" title="@GlobalMessages.Incluir" class="btn btn-default" data-toggle="modal" data-target="#modalContato">
+                <i class="fa fa-plus" aria-hidden="true"></i> @GlobalMessages.Incluir
+            </button>
+        </div>
+    </div>
+    @if (Model != null)
+    {
+        <table datatable="" dt-options="contato.dtOptions" dt-columns="contato.dtColumns"
+               dt-instance="contato.dtInstance" class="table table-striped table-bordered"
+               dt-column-defs="contato.dtColumnDefs"></table>
+    }
+</div>
+
+<script>
+    Europa.Controllers.Cliente.Contato = []
+</script>

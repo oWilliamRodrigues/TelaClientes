@@ -1,0 +1,106 @@
+﻿@using Europa.Domain.Shared
+<!DOCTYPE html>
+<html ng-app="europaApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        @{
+            if (ViewBag.Title == null)
+            {
+                ViewBag.Title = "Treinamento GEEN";
+            }
+            @ViewBag.Title;
+        }
+    </title>
+    <link rel="shortcut icon" type="image/x-icon" href="" />
+    @Styles.Render("~/css/bootstrap")
+    @Styles.Render("~/css/bootstrap-daterangepicker")
+    @Styles.Render("~/css/font-awesome")
+    @Styles.Render("~/css/select2")
+    @Styles.Render("~/css/jquery-ui")
+    @Styles.Render("~/css/fullcalendar")
+    @Styles.Render("~/css/notify")
+    @Styles.Render("~/css/tinymce")
+    @Styles.Render("~/css/bootstrap-treeview")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryNumeric")
+    @Scripts.Render("~/bundles/moment")
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap-daterangepicker")
+    @Scripts.Render("~/bundles/bootstrap-validator")
+
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angular-datatable")
+    @Styles.Render("~/css/angular-datatable")
+    @Scripts.Render("~/bundles/select2")
+    @Scripts.Render("~/bundles/fullcalendar")
+    @Scripts.Render("~/bundles/notify")
+
+    @Styles.Render("~/css/europa")
+    @Scripts.Render("~/bundles/europa")
+    @Scripts.Render("~/bundles/chart")
+    @Scripts.Render("~/bundles/bootstrap-treeview")
+
+    <script src="~/Static/europa/dynamic/europa-messages-enuns.js"></script>
+    <script src="~/Static/europa/dynamic/europa-messages.js"></script>
+    <script src="~/Static/projeto/autocomplete-base.js"></script>
+    <script src="~/Static/projeto/modal-base.js"></script>
+    <script src="~/Static/projeto/datepicker-base.js"></script>
+    <script src="~/Static/tinymce/tinymce.min.js"></script>
+    <script src="~/Static/projeto/tinymce-base.js"></script>
+    <script>
+        var basePath = "@Request.Url.OriginalString.Replace(Request.Url.PathAndQuery, "")" + "@Request.ApplicationPath";
+    </script>
+
+</head>
+<body>
+    @{
+        Html.RenderPartial("~/Views/Shared/Menu.cshtml");
+        Html.RenderPartial("~/Views/Shared/_AutoCompleteAction.cshtml");
+    	Html.RenderPartial("~/Views/Shared/_DetailAction.cshtml");
+    }
+    <script src="~/Static/projeto/autocomplete-declaration.js"></script>
+    <div class="wrapper container-fluid">
+        @RenderBody()
+        <div class="col-md-24" style="color: transparent; font-size: smaller">
+            @{Html.RenderPartial("~/Views/Shared/Footer.cshtml");}
+        </div>
+    </div>
+    @{Html.RenderPartial("~/Views/Shared/Dialogo.cshtml");}
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $.fn.select2.defaults.set("language", "pt-BR");
+        $.fn.select2.defaults.set("theme", "bootstrap");
+        $(document)
+            .ready(function () {
+                //Iniciando O HUB URA
+                if (Europa.Components.SignalR != undefined) {
+                    Europa.SignalR = Europa.Components.SignalR.GetInstance();
+                }
+
+                Europa.AjaxConfigure();
+                Europa.Ready();
+                $.fn.modal.Constructor.prototype.enforceFocus = function () { };
+                $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $(this).parent().siblings().removeClass('open');
+                    $(this).parent().toggleClass('open');
+                });
+            });
+
+        Europa.UrlListarPerfisUsuarioLogado = '@Url.Action("ListarPerfisUsuarioLogado", "Perfil")'; 
+    </script>
+
+        @using (Html.BeginForm("RedirectCliente", "Atendimento", FormMethod.Post, new { Id = "form_redirect_atendimento_layout", target = "_blank" })) { }
+        @using (Html.BeginForm("FromPreCliente", "AtendimentoVenda", FormMethod.Post, new { Id = "form_redirect_atendimento_venda_layout", target = "_blank" })) { }
+</body>
+</html>
