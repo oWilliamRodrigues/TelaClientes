@@ -1,0 +1,1 @@
+﻿//Requerido para a compilação do projeto levar a pasta dynamic para o pacote.
